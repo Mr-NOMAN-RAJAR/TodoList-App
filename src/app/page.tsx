@@ -1,101 +1,142 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
 
-export default function Home() {
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+const TodoList = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [inputValue, sateInputValuse] = useState("");
+
+  // Add items
+  const addTodos = () => {
+    if (inputValue.trim() === "") return;
+    setTodos([
+      ...todos,
+      { id: Date.now(), text: inputValue, completed: false },
+    ]);
+    sateInputValuse("");
+  };
+
+  // Toggle completion
+  const toggletodo = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  // Delete Todo
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="flex flex-col min-h-23px bg-[url('/images/bg.jpg')] bg-cover bg-center h-screen">
+      <header className="bg-transparent text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl font-serif font-bold">Todo List By NOMAN</h1>
+          <p className="font-serif mt-3 text-yellow-300">
+            Organize Your Work with Our Next.js Todo List App
+          </p>
+        </div>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <main className="flex-grow flex items-center justify-center">
+        <div className="max-w-md mx-auto p-4 bg-blue-950 shadow-white rounded-lg shadow-lg">
+          <div className="mb-4">
+            <div className="flex">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => sateInputValuse(e.target.value)}
+                className="flex-grow p-2 border border-green-800 rounded-lg text-black"
+                placeholder="Add a New Task ..."
+              />
+              <button
+                onClick={addTodos}
+                className="ml-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500"
+              >
+                Add Task
+              </button>
+            </div>
+          </div>
+
+          <ul className="space-y-2">
+            {todos.map((todo) => (
+              <li
+                key={todo.id}
+                className={`flex item-center justify-between p-2 border border-t-amber-50 rounded-lg ${
+                  todo.completed ? "bg-lime-500 line-through" : "bg-blue-400"
+                }`}
+              >
+                <span>{todo.text}</span>
+
+                <div>
+                  <button
+                    onClick={() => toggletodo(todo.id)}
+                    className="px-2 py-1 text-sm bg-blue-600 rounded-lg hover:bg-blue-500"
+                  >
+                    {todo.completed ? "Undo" : "Complete"}
+                  </button>
+
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="px-2 py-1 ml-2 text-sm bg-cyan-900 rounded-lg hover:bg-cyan-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* Footer Component */}
+      <Footer />
     </div>
   );
-}
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-800 min-h-23px text-white h-12 flex items-center justify-center space-x-4 border-solid border-white">
+       <div >
+      <p className="font-serif font-small ">Created by</p>
+      <p className=" text-yellow-400 font-serif font-bold">Noman Rajar</p>
+      </div>
+      <p>© 2024 My Website</p>
+      <div className="flex space-x-4">
+        {/* LinkedIn Icon */}
+        <a
+          href="https://www.linkedin.com/in/mr-noman-5351bb2b4/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B7xQETWNnRvalaY2N%2BtFeBQ%3D%3D/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-blue-400"
+        >
+          <FaLinkedin size={20} />
+        </a>
+
+        {/* GitHub Icon */}
+        <a
+          href="https://github.com/Mr-NOMAN-RAJAR"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-gray-400"
+        >
+          <FaGithub size={20} />
+        </a>
+      </div>
+     
+    </footer>
+  );
+};
+
+export default TodoList;
+
