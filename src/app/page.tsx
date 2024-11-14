@@ -37,30 +37,30 @@ const TodoList = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-23px bg-[url('/images/bg.jpg')] bg-cover bg-center h-screen">
-      <header className="bg-transparent text-white">
+    <div className="flex flex-col min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center">
+      <header className="bg-transparent text-white p-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-serif font-bold">Todo List By NOMAN</h1>
-          <p className="font-serif mt-3 text-yellow-300">
+          <h1 className="text-2xl md:text-3xl font-serif font-bold">Todo List By NOMAN</h1>
+          <p className="font-serif mt-3 text-yellow-300 text-sm md:text-base">
             Organize Your Work with Our Next.js Todo List App
           </p>
         </div>
       </header>
 
-      <main className="flex-grow flex items-center justify-center">
-        <div className="max-w-md mx-auto p-4 bg-blue-950 shadow-white rounded-lg shadow-lg">
+      <main className="flex-grow flex items-center justify-center p-4">
+        <div className="w-full max-w-md mx-auto p-4 bg-blue-950 shadow-white rounded-lg shadow-lg">
           <div className="mb-4">
-            <div className="flex">
+            <div className="flex flex-col md:flex-row">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => sateInputValuse(e.target.value)}
-                className="flex-grow p-2 border border-green-800 rounded-lg text-black"
+                className="flex-grow p-2 border border-green-800 rounded-lg text-black mb-2 md:mb-0 md:mr-2"
                 placeholder="Add a New Task ..."
               />
               <button
                 onClick={addTodos}
-                className="ml-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500"
+                className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500"
               >
                 Add Task
               </button>
@@ -71,23 +71,23 @@ const TodoList = () => {
             {todos.map((todo) => (
               <li
                 key={todo.id}
-                className={`flex item-center justify-between p-2 border border-t-amber-50 rounded-lg ${
+                className={`flex items-center justify-between p-2 border border-t-amber-50 rounded-lg ${
                   todo.completed ? "bg-lime-500 line-through" : "bg-blue-400"
                 }`}
               >
-                <span>{todo.text}</span>
+                <span className="text-sm md:text-base">{todo.text}</span>
 
-                <div>
+                <div className="flex space-x-2">
                   <button
                     onClick={() => toggletodo(todo.id)}
-                    className="px-2 py-1 text-sm bg-blue-600 rounded-lg hover:bg-blue-500"
+                    className="px-2 py-1 text-xs md:text-sm bg-blue-600 rounded-lg hover:bg-blue-500"
                   >
                     {todo.completed ? "Undo" : "Complete"}
                   </button>
 
                   <button
                     onClick={() => deleteTodo(todo.id)}
-                    className="px-2 py-1 ml-2 text-sm bg-cyan-900 rounded-lg hover:bg-cyan-700"
+                    className="px-2 py-1 text-xs md:text-sm bg-cyan-900 rounded-lg hover:bg-cyan-700"
                   >
                     Delete
                   </button>
@@ -106,12 +106,11 @@ const TodoList = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 min-h-23px text-white h-12 flex items-center justify-center space-x-4 border-solid border-white">
-       <div >
-      <p className="font-serif font-small ">Created by</p>
-      <p className=" text-yellow-400 font-serif font-bold">Noman Rajar</p>
+    <footer className="bg-gray-800 text-white flex flex-col md:flex-row items-center justify-between p-4 md:p-6 space-y-2 md:space-y-0 text-center">
+      <div>
+        <p className="font-serif">Created by <span className="text-yellow-400 font-bold">Noman Rajar</span></p>
+        <p>© 2024 My Website</p>
       </div>
-      <p>© 2024 My Website</p>
       <div className="flex space-x-4">
         {/* LinkedIn Icon */}
         <a
@@ -133,10 +132,8 @@ const Footer = () => {
           <FaGithub size={20} />
         </a>
       </div>
-     
     </footer>
   );
 };
 
 export default TodoList;
-
